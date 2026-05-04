@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AKUMA — Photo Log</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Montserrat",sans-serif;}
+html{scroll-behavior:smooth;}
+body{background:#050507;color:#fff;overflow-x:hidden;cursor:none;min-height:100vh;}
+
+/* ── cursor ── */
+#cursor{position:fixed;width:32px;height:32px;border:1.5px solid rgba(56,189,248,.7);border-radius:50%;pointer-events:none;z-index:999999;transition:.18s ease;transform:translate(-50%,-50%);}
+#cursor.expand{width:52px;height:52px;background:rgba(56,189,248,.08);border-color:#38bdf8;}
+#cursorDot{position:fixed;width:6px;height:6px;background:#38bdf8;border-radius:50%;pointer-events:none;z-index:999999;transform:translate(-50%,-50%);}
+
+/* ── noise overlay ── */
+body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px 180px;opacity:.025;pointer-events:none;z-index:1;}
+
+/* ── header ── */
+header{
+  position:sticky;top:0;
+  background:rgba(5,5,7,.85);
+  backdrop-filter:blur(14px);
+  z-index:100;
+  border-bottom:1px solid rgba(56,189,248,.15);
+  box-shadow:0 2px 30px rgba(0,0,0,.5);
+}
+nav{max-width:1200px;margin:auto;padding:16px 28px;display:flex;justify-content:space-between;align-items:center;}
+.logo{font-size:20px;font-weight:900;color:#fff;text-decoration:none;letter-spacing:-1px;}
+.logo span{color:#38bdf8;}
+.backBtn{
+  display:flex;align-items:center;gap:8px;
+  text-decoration:none;
+  color:rgba(255,255,255,.6);
+  font-size:12px;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;
+  transition:.2s;
+  padding:8px 14px;
+  border:1px solid rgba(56,189,248,.2);
+  border-radius:999px;
+}
+.backBtn:hover{color:#38bdf8;border-color:rgba(56,189,248,.5);}
+.backBtn svg{transition:.2s;}
+.backBtn:hover svg{transform:translateX(-3px);}
+
+/* ── hero banner ── */
+.galleryHero{
+  position:relative;
+  padding:60px 28px 48px;
+  max-width:1200px;
+  margin:0 auto;
+  overflow:hidden;
+}
+.heroAccent{
+  position:absolute;
+  top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(56,189,248,.6) 30%,rgba(255,255,255,.15) 50%,rgba(56,189,248,.6) 70%,transparent);
+  box-shadow:0 0 18px rgba(56,189,248,.25);
+}
+.tagBadge{
+  display:inline-block;
+  padding:6px 14px;
+  border:1px solid rgba(56,189,248,.4);
+  border-radius:999px;
+  color:#38bdf8;
+  font-size:11px;font-weight:900;letter-spacing:2px;
+  background:rgba(56,189,248,.06);
+  margin-bottom:16px;
+}
+.galleryHero h1{
+  font-size:clamp(36px,6vw,72px);
+  font-weight:900;
+  letter-spacing:-2px;
+  line-height:1;
+  margin-bottom:14px;
+  text-shadow:0 0 40px rgba(56,189,248,.2);
+}
+.galleryHero h1 span{color:#38bdf8;}
+.galleryHero p.heroDesc{
+  color:rgba(255,255,255,.5);
+  font-size:14px;line-height:1.8;
+  max-width:500px;
+  margin-bottom:28px;
+}
+.heroStats{
+  display:flex;gap:28px;
+  flex-wrap:wrap;
+}
+.heroStat{
+  display:flex;flex-direction:column;gap:3px;
+}
+.heroStat strong{
+  font-size:22px;font-weight:900;color:#38bdf8;
+}
+.heroStat span{
+  font-size:10px;font-weight:700;letter-spacing:1.5px;color:rgba(255,255,255,.35);text-transform:uppercase;
+}
+
+/* ── decorative diagonal lines ── */
+.heroDiag{
+  position:absolute;
+  top:-40px;right:60px;
+  width:1px;height:300px;
+  background:linear-gradient(180deg,transparent,rgba(56,189,248,.3) 40%,rgba(56,189,248,.1) 70%,transparent);
+  transform:rotate(18deg);transform-origin:top;
+  pointer-events:none;
+}
+.heroDiag2{
+  position:absolute;
+  top:-40px;right:100px;
+  width:1px;height:240px;
+  background:linear-gradient(180deg,transparent,rgba(56,189,248,.15) 40%,transparent);
+  transform:rotate(14deg);transform-origin:top;
+  pointer-events:none;opacity:.5;
+}
+
+/* ── filter bar ── */
+.filterBar{
+  max-width:1200px;margin:0 auto;
+  padding:0 28px 32px;
+  display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+}
+.filterBtn{
+  padding:7px 16px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:999px;
+  background:transparent;
+  color:rgba(255,255,255,.5);
+  font-size:12px;font-weight:700;letter-spacing:1px;
+  cursor:none;
+  transition:.2s;
+  text-transform:uppercase;
+}
+.filterBtn:hover,.filterBtn.active{
+  border-color:rgba(56,189,248,.5);
+  color:#38bdf8;
+  background:rgba(56,189,248,.06);
+}
+.filterCount{
+  margin-left:auto;
+  font-size:11px;font-weight:700;letter-spacing:1.5px;
+  color:rgba(255,255,255,.25);
+}
+
+/* ── masonry grid ── */
+.galleryWrap{
+  max-width:1200px;margin:0 auto;
+  padding:0 28px 80px;
+  columns:3;column-gap:16px;
+}
+@media(max-width:900px){.galleryWrap{columns:2;}}
+@media(max-width:560px){.galleryWrap{columns:1;padding:0 16px 60px;}}
+
+/* ── photo item ── */
+.photoItem{
+  break-inside:avoid;
+  margin-bottom:16px;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.06);
+  background:rgba(255,255,255,.03);
+  cursor:none;
+  position:relative;
+  opacity:0;
+  animation:itemIn .5s ease forwards;
+}
+@keyframes itemIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+.photoItem img{
+  width:100%;display:block;
+  transition:transform .5s ease;
+  border-radius:14px 14px 0 0;
+}
+.photoItem:hover img{transform:scale(1.04);}
+
+.photoCaption{
+  padding:16px 18px 18px;
+  background:linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.5));
+}
+.photoCaption h3{
+  font-size:14px;font-weight:800;
+  margin-bottom:6px;line-height:1.3;
+}
+.photoCaption p{
+  font-size:12px;color:rgba(255,255,255,.55);line-height:1.7;
+}
+.photoCaption .photoMeta{
+  display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;
+}
+.photoMeta span{
+  font-size:10px;font-weight:700;letter-spacing:1px;
+  color:rgba(56,189,248,.7);
+  background:rgba(56,189,248,.08);
+  border:1px solid rgba(56,189,248,.2);
+  border-radius:999px;
+  padding:3px 9px;
+}
+
+/* ── overlay ── */
+.photoOverlay{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,.0);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:.25s;
+  border-radius:14px;
+}
+.photoItem:hover .photoOverlay{opacity:1;background:rgba(0,0,0,.25);}
+.photoOverlay svg{filter:drop-shadow(0 0 8px rgba(0,0,0,.8));}
+
+/* ── empty state ── */
+.emptyState{
+  max-width:1200px;margin:0 auto;
+  padding:80px 28px;
+  display:flex;flex-direction:column;align-items:center;gap:18px;
+  color:rgba(255,255,255,.2);
+  text-align:center;
+}
+.emptyState h3{font-size:18px;font-weight:800;color:rgba(255,255,255,.3);}
+.emptyState p{font-size:12px;line-height:1.8;max-width:400px;color:rgba(255,255,255,.18);}
+.emptyState code{
+  display:block;margin-top:20px;
+  padding:16px 20px;
+  background:rgba(56,189,248,.05);
+  border:1px solid rgba(56,189,248,.15);
+  border-radius:10px;
+  font-family:monospace;font-size:12px;
+  color:rgba(56,189,248,.7);text-align:left;line-height:2;
+  max-width:500px;
+}
+
+/* ── lightbox ── */
+#lightbox{
+  position:fixed;inset:0;z-index:99999;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;opacity:0;
+  transition:opacity .25s;
+}
+#lightbox.show{opacity:1;pointer-events:auto;}
+#lbBg{position:absolute;inset:0;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);}
+#lbImg{
+  position:relative;z-index:1;
+  max-width:90vw;max-height:85vh;
+  object-fit:contain;
+  border-radius:8px;
+  box-shadow:0 0 80px rgba(0,0,0,.9);
+  transition:opacity .15s;
+}
+#lbPrev,#lbNext{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:48px;height:48px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.6);
+  display:flex;align-items:center;justify-content:center;
+  cursor:none;z-index:2;transition:.2s;
+}
+#lbPrev{left:20px;}#lbNext{right:20px;}
+#lbPrev:hover,#lbNext:hover{background:rgba(56,189,248,.2);border-color:rgba(56,189,248,.5);}
+#lbClose{
+  position:absolute;top:20px;right:20px;
+  width:40px;height:40px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.15);background:rgba(0,0,0,.6);
+  display:flex;align-items:center;justify-content:center;
+  cursor:none;z-index:2;transition:.2s;
+}
+#lbClose:hover{background:rgba(200,0,0,.3);}
+#lbInfo{
+  position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+  z-index:2;text-align:center;
+}
+#lbTitle{font-size:14px;font-weight:700;margin-bottom:4px;}
+#lbCounter{font-size:11px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.4);}
+
+/* ── footer ── */
+footer{
+  text-align:center;padding:32px;
+  color:rgba(255,255,255,.2);font-size:12px;
+  border-top:1px solid rgba(255,255,255,.04);
+}
+
+/* ── scrollbar ── */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:rgba(56,189,248,.3);border-radius:999px;}
+::-webkit-scrollbar-track{background:transparent;}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursorDot"></div>
+
+<header>
+  <nav>
+    <a class="logo" href="個人網頁.html?skip=1">A<span>K</span>UMA</a>
+    <a class="backBtn" href="個人網頁.html?skip=1">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polyline points="9,2 4,7 9,12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      返回主頁
+    </a>
+  </nav>
+</header>
+
+<div class="galleryHero">
+  <div class="heroAccent"></div>
+  <div class="heroDiag"></div>
+  <div class="heroDiag2"></div>
+  <div class="tagBadge">PHOTO LOG</div>
+  <h1>Photo Log</h1>
+  <p class="heroDesc">拍攝紀錄與生活照片。記錄每一個值得留下的瞬間。</p>
+  <div class="heroStats">
+    <div class="heroStat">
+      <strong id="totalCount">0</strong>
+      <span>作品數量</span>
+    </div>
+    <div class="heroStat">
+      <strong id="catCount">0</strong>
+      <span>分類標籤</span>
+    </div>
+  </div>
+</div>
+
+<div class="filterBar">
+  <button class="filterBtn active" data-filter="all" type="button">全部</button>
+  <!-- 分類按鈕會由 JS 自動生成 -->
+  <span class="filterCount" id="filterCount"></span>
+</div>
+
+<div class="galleryWrap" id="galleryWrap"></div>
+<div class="emptyState" id="emptyState" style="display:none;">
+  <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+    <rect x="4" y="10" width="48" height="36" rx="4" stroke="rgba(56,189,248,0.3)" stroke-width="1.5"/>
+    <circle cx="18" cy="24" r="5" stroke="rgba(56,189,248,0.3)" stroke-width="1.2"/>
+    <polyline points="4,42 16,28 26,36 36,22 52,42" stroke="rgba(56,189,248,0.25)" stroke-width="1.2" fill="none"/>
+  </svg>
+  <h3>尚未放入任何作品</h3>
+  <p>在 JS 的 <strong style="color:rgba(56,189,248,0.6)">photos</strong> 陣列加入你的圖片資料就會顯示</p>
+  <code>
+  // 範例格式：<br>
+  { src: "photo1.jpg", title: "照片標題", desc: "簡單說明文字", tags: ["風景","旅遊"] },<br>
+  { src: "photo2.jpg", title: "另一張照片", desc: "", tags: ["生活"] },
+  </code>
+</div>
+
+<!-- lightbox -->
+<div id="lightbox">
+  <div id="lbBg"></div>
+  <button id="lbPrev" type="button"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><polyline points="13,3 6,10 13,17" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <img id="lbImg" src="" alt="">
+  <button id="lbNext" type="button"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><polyline points="7,3 14,10 7,17" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <button id="lbClose" type="button"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="1" y1="1" x2="13" y2="13" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><line x1="13" y1="1" x2="1" y2="13" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+  <div id="lbInfo">
+    <div id="lbTitle"></div>
+    <div id="lbCounter"></div>
+  </div>
+</div>
+
+<footer>© 2026 Akuma — Photo Log</footer>
+
+<script>
+/* ══════════════════════════════════════════
+   ▼▼▼ 在這裡加入你的照片 ▼▼▼
+   格式：
+   { src: "檔名.jpg", title: "標題", desc: "說明文字（可空白）", tags: ["標籤1","標籤2"] }
+   圖片放在與此 HTML 同一個資料夾，或填完整路徑
+══════════════════════════════════════════ */
+const photos = [
+  /* 範例（刪掉這幾行，換成你的）：
+  { src: "photo1.jpg", title: "示範照片 1", desc: "這裡是說明文字", tags: ["生活"] },
+  { src: "photo2.jpg", title: "示範照片 2", desc: "", tags: ["旅遊","風景"] },
+  */
+];
+/* ▲▲▲ 照片加到這裡 ▲▲▲ */
+
+
+/* ══ 以下不需要修改 ══ */
+const wrap      = document.getElementById("galleryWrap");
+const emptyEl   = document.getElementById("emptyState");
+const filterBar = document.querySelector(".filterBar");
+const filterCountEl = document.getElementById("filterCount");
+const totalCountEl  = document.getElementById("totalCount");
+const catCountEl    = document.getElementById("catCount");
+
+const lightbox  = document.getElementById("lightbox");
+const lbImg     = document.getElementById("lbImg");
+const lbTitle   = document.getElementById("lbTitle");
+const lbCounter = document.getElementById("lbCounter");
+const lbPrev    = document.getElementById("lbPrev");
+const lbNext    = document.getElementById("lbNext");
+const lbClose   = document.getElementById("lbClose");
+const lbBg      = document.getElementById("lbBg");
+
+let currentFilter = "all";
+let lbIndex = 0;
+let lbList  = [];
+
+// build tag list
+const allTags = [...new Set(photos.flatMap(p => p.tags || []))];
+
+// inject filter buttons
+allTags.forEach(tag => {
+  const btn = document.createElement("button");
+  btn.className = "filterBtn";
+  btn.dataset.filter = tag;
+  btn.textContent = tag;
+  btn.type = "button";
+  filterBar.insertBefore(btn, filterCountEl);
+});
+
+// stats
+totalCountEl.textContent = photos.length;
+catCountEl.textContent   = allTags.length || 0;
+
+function render(filter) {
+  wrap.innerHTML = "";
+  const list = filter === "all" ? photos : photos.filter(p => (p.tags||[]).includes(filter));
+  lbList = list;
+
+  filterCountEl.textContent = list.length + " 件作品";
+
+  if (photos.length === 0) {
+    emptyEl.style.display = "flex";
+    wrap.style.display    = "none";
+    return;
+  }
+  emptyEl.style.display = "none";
+  wrap.style.display    = "";
+
+  list.forEach((p, i) => {
+    const item = document.createElement("div");
+    item.className = "photoItem";
+    item.style.animationDelay = (i * 0.04) + "s";
+
+    const tagsHtml = (p.tags||[]).map(t => `<span>${t}</span>`).join("");
+
+    item.innerHTML = `
+      <img src="${p.src}" alt="${p.title||""}" loading="lazy">
+      <div class="photoOverlay">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <path d="M4 4h7M4 4v7M24 4h-7M24 4v7M4 24h7M4 24v-7M24 24h-7M24 24v-7" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+      ${(p.title || p.desc || tagsHtml) ? `
+      <div class="photoCaption">
+        ${p.title ? `<h3>${p.title}</h3>` : ""}
+        ${p.desc  ? `<p>${p.desc}</p>`   : ""}
+        ${tagsHtml ? `<div class="photoMeta">${tagsHtml}</div>` : ""}
+      </div>` : ""}
+    `;
+
+    item.addEventListener("click", () => openLightbox(i));
+    wrap.appendChild(item);
+  });
+}
+
+function openLightbox(i) {
+  lbIndex = i;
+  const p = lbList[i];
+  lbImg.src = p.src;
+  lbImg.alt = p.title || "";
+  lbTitle.textContent   = p.title || "";
+  lbCounter.textContent = (i+1) + " / " + lbList.length;
+  lightbox.classList.add("show");
+}
+
+function closeLightbox() {
+  lightbox.classList.remove("show");
+  lbImg.src = "";
+}
+
+function lbGo(dir) {
+  lbIndex = (lbIndex + dir + lbList.length) % lbList.length;
+  lbImg.style.opacity = "0";
+  setTimeout(() => {
+    const p = lbList[lbIndex];
+    lbImg.src = p.src;
+    lbTitle.textContent   = p.title || "";
+    lbCounter.textContent = (lbIndex+1) + " / " + lbList.length;
+    lbImg.style.opacity = "1";
+  }, 120);
+}
+
+lbClose.addEventListener("click", closeLightbox);
+lbBg.addEventListener("click", closeLightbox);
+lbPrev.addEventListener("click", e => { e.stopPropagation(); lbGo(-1); });
+lbNext.addEventListener("click", e => { e.stopPropagation(); lbGo(1); });
+
+document.addEventListener("keydown", e => {
+  if (!lightbox.classList.contains("show")) return;
+  if (e.key === "ArrowLeft")  lbGo(-1);
+  if (e.key === "ArrowRight") lbGo(1);
+  if (e.key === "Escape")     closeLightbox();
+});
+
+filterBar.addEventListener("click", e => {
+  const btn = e.target.closest(".filterBtn");
+  if (!btn) return;
+  document.querySelectorAll(".filterBtn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  currentFilter = btn.dataset.filter;
+  render(currentFilter);
+});
+
+render("all");
+
+/* ── cursor ── */
+const cursor    = document.getElementById("cursor");
+const cursorDot = document.getElementById("cursorDot");
+let mx=0,my=0,cx=0,cy=0;
+document.addEventListener("mousemove", e => {
+  mx = e.clientX; my = e.clientY;
+  cursorDot.style.left = mx+"px"; cursorDot.style.top = my+"px";
+});
+(function animC(){
+  cx += (mx-cx)*.14; cy += (my-cy)*.14;
+  cursor.style.left = cx+"px"; cursor.style.top = cy+"px";
+  requestAnimationFrame(animC);
+})();
+document.querySelectorAll("a,button,.photoItem").forEach(el=>{
+  el.addEventListener("mouseenter",()=>cursor.classList.add("expand"));
+  el.addEventListener("mouseleave",()=>cursor.classList.remove("expand"));
+});
+
+/* ── Back button click transition ── */
+document.querySelectorAll(".backBtn,.logo").forEach(link => {
+  link.addEventListener("click", function(e){
+    const href = this.href;
+    if(!href || href === "#") return;
+    e.preventDefault();
+
+    const flash = document.createElement("div");
+    flash.style.cssText = [
+      "position:fixed","inset:0","z-index:999999",
+      "background:#fff","opacity:0","pointer-events:none",
+      "transition:opacity 0.06s ease"
+    ].join(";");
+    document.body.appendChild(flash);
+
+    /* 閃兩下 → fade 黑 0.8s → 跳頁 */
+    requestAnimationFrame(()=>{
+      flash.style.opacity = "1";
+      setTimeout(()=>{
+        flash.style.opacity = "0";
+        setTimeout(()=>{
+          flash.style.opacity = "1";
+          setTimeout(()=>{
+            flash.style.opacity = "0";
+            setTimeout(()=>{
+              flash.style.background = "#000";
+              flash.style.transition = "opacity 0.8s ease";
+              flash.style.opacity    = "1";
+              setTimeout(()=>{ window.location.href = href; }, 820);
+            }, 60);
+          }, 60);
+        }, 60);
+      }, 60);
+    });
+  });
+});
+</script>
+</body>
+</html>

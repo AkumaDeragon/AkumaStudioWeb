@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AKUMA | Blog</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:"Montserrat",sans-serif;}
+    body{background:#050507;color:white;overflow-x:hidden;scroll-behavior:smooth;}
+
+    /* =========================
+       INTRO OVERLAY
+    ========================== */
+    #intro{
+      position:fixed;
+      inset:0;
+      background:#000;
+      z-index:99999;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .scanlines{
+      position:absolute;
+      inset:0;
+      background:repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.06) 0px,
+        rgba(255,255,255,0.06) 1px,
+        rgba(0,0,0,0) 4px,
+        rgba(0,0,0,0) 8px
+      );
+      opacity:0.15;
+      mix-blend-mode:overlay;
+      pointer-events:none;
+      z-index:5;
+      animation:scanMove 0.15s linear infinite;
+    }
+
+    @keyframes scanMove{
+      0%{transform:translateY(0);}
+      100%{transform:translateY(8px);}
+    }
+
+    .noise{
+      position:absolute;
+      inset:0;
+      background-image:url("https://grainy-gradients.vercel.app/noise.svg");
+      opacity:0.12;
+      mix-blend-mode:overlay;
+      pointer-events:none;
+      z-index:6;
+      animation:noisePulse 0.08s infinite;
+    }
+
+    @keyframes noisePulse{
+      0%{opacity:0.06;}
+      40%{opacity:0.18;}
+      70%{opacity:0.10;}
+      100%{opacity:0.08;}
+    }
+
+    .strobe{
+      position:absolute;
+      inset:0;
+      background:#fff;
+      opacity:0;
+      z-index:50;
+      pointer-events:none;
+    }
+
+    #textStage{
+      position:relative;
+      width:100%;
+      height:100%;
+      z-index:20;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+
+    #mainText{
+      position:relative;
+      font-size:clamp(52px, 8vw, 140px);
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:-2px;
+      color:#ffffff;
+      opacity:0;
+      transform:translateX(-130%);
+      text-shadow:0 0 18px rgba(255,255,255,0.15);
+      will-change: transform, opacity;
+      z-index:30;
+    }
+
+    .ghost{
+      position:absolute;
+      font-size:clamp(52px, 8vw, 140px);
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:-2px;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      white-space:nowrap;
+      pointer-events:none;
+      opacity:0.4;
+      z-index:25;
+      will-change: transform, opacity, filter;
+      text-shadow:0 0 12px rgba(255,255,255,0.1);
+    }
+
+    .ghost.red{
+      color:#ff003c;
+      mix-blend-mode:screen;
+    }
+    .ghost.blue{
+      color:#00d9ff;
+      mix-blend-mode:screen;
+    }
+    .ghost.white{
+      color:#ffffff;
+      mix-blend-mode:screen;
+    }
+
+    .slice{
+      position:absolute;
+      left:0;
+      width:100%;
+      height:12px;
+      background:rgba(255,255,255,0.18);
+      opacity:0;
+      z-index:40;
+      mix-blend-mode:screen;
+      pointer-events:none;
+      filter:blur(0.3px);
+    }
+
+    /* PERSON FLASH */
+    .personFlash{
+      position:absolute;
+      inset:0;
+      background:url("akuma.png") center/cover no-repeat;
+      opacity:0;
+      z-index:45;
+      pointer-events:none;
+      filter:contrast(2.2) brightness(2.5) saturate(0.9);
+      mix-blend-mode:screen;
+    }
+
+    /* =========================
+       BLOG SITE
+    ========================== */
+    #site{
+      opacity:0;
+      visibility:hidden;
+      transform:translateY(20px);
+    }
+
+    #site.glitchIn{
+      visibility:visible;
+      animation: siteGlitchIn 0.65s steps(1) forwards;
+    }
+
+    @keyframes siteGlitchIn{
+      0%{
+        opacity:0;
+        transform:translateY(20px) translateX(-8px);
+        filter:blur(12px);
+      }
+      20%{
+        opacity:1;
+        transform:translateY(0px) translateX(6px);
+        filter:blur(0px);
+      }
+      35%{
+        opacity:0.3;
+        transform:translateY(0px) translateX(-5px);
+      }
+      55%{
+        opacity:1;
+        transform:translateY(0px) translateX(3px);
+      }
+      75%{
+        opacity:0.6;
+        transform:translateY(0px) translateX(-2px);
+      }
+      100%{
+        opacity:1;
+        transform:translateY(0px) translateX(0px);
+        filter:blur(0px);
+      }
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:100;
+      background:rgba(0,0,0,0.6);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    nav{
+      max-width:1100px;
+      margin:auto;
+      padding:18px 20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .logo{
+      font-weight:900;
+      letter-spacing:1px;
+      font-size:20px;
+      text-decoration:none;
+      color:white;
+    }
+
+    .logo span{
+      color:#ff7a00;
+      text-shadow:0 0 18px rgba(255,122,0,0.6);
+    }
+
+    nav a{
+      color:rgba(255,255,255,0.75);
+      text-decoration:none;
+      margin-left:18px;
+      font-size:14px;
+      transition:0.2s;
+    }
+    nav a:hover{color:white;}
+
+    .hero{
+      max-width:1100px;
+      margin:auto;
+      padding:70px 20px 40px;
+    }
+
+    .hero h1{
+      font-size:clamp(32px, 5vw, 60px);
+      font-weight:900;
+      line-height:1.1;
+    }
+
+    .hero h1 span{
+      color:#ff7a00;
+      text-shadow:0 0 20px rgba(255,122,0,0.7);
+    }
+
+    .hero p{
+      margin-top:14px;
+      color:rgba(255,255,255,0.72);
+      max-width:720px;
+      line-height:1.8;
+      font-size:15px;
+    }
+
+    .container{
+      max-width:1100px;
+      margin:auto;
+      padding:20px;
+      display:grid;
+      grid-template-columns: 1fr 330px;
+      gap:22px;
+    }
+
+    .post{
+      padding:22px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.08);
+      background:rgba(255,255,255,0.03);
+      transition:0.25s;
+      cursor:pointer;
+    }
+
+    .post:hover{
+      transform:translateY(-4px);
+      border:1px solid rgba(255,122,0,0.35);
+      box-shadow:0 0 20px rgba(255,122,0,0.12);
+    }
+
+    .post h2{
+      font-size:18px;
+      margin-bottom:10px;
+    }
+
+    .post p{
+      color:rgba(255,255,255,0.7);
+      line-height:1.8;
+      font-size:14px;
+    }
+
+    .tag{
+      display:inline-block;
+      margin-top:14px;
+      font-size:12px;
+      padding:5px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.06);
+      color:rgba(255,255,255,0.75);
+    }
+
+    .sidebar{
+      padding:22px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.08);
+      background:rgba(255,255,255,0.03);
+      height:fit-content;
+    }
+
+    .sidebar h3{
+      font-size:16px;
+      margin-bottom:12px;
+      color:#ff7a00;
+      text-shadow:0 0 16px rgba(255,122,0,0.6);
+    }
+
+    .sidebar p{
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+      line-height:1.8;
+    }
+
+    .sectionBlock{
+      max-width:1100px;
+      margin:50px auto;
+      padding:0 20px;
+    }
+
+    .sectionBlock h2{
+      font-size:26px;
+      margin-bottom:15px;
+      color:#ff7a00;
+      text-shadow:0 0 16px rgba(255,122,0,0.55);
+    }
+
+    .sectionBlock p{
+      color:rgba(255,255,255,0.72);
+      line-height:1.9;
+      font-size:14px;
+      max-width:850px;
+    }
+
+    .projectGrid{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:18px;
+    }
+
+    .projectCard{
+      padding:18px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.08);
+      background:rgba(255,255,255,0.03);
+      transition:0.25s;
+    }
+
+    .projectCard:hover{
+      transform:translateY(-4px);
+      border:1px solid rgba(255,122,0,0.35);
+      box-shadow:0 0 18px rgba(255,122,0,0.12);
+    }
+
+    .projectCard h3{
+      font-size:16px;
+      margin-bottom:10px;
+    }
+
+    .projectCard span{
+      display:inline-block;
+      margin-top:10px;
+      font-size:12px;
+      padding:5px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.06);
+      color:rgba(255,255,255,0.75);
+    }
+
+    .contactBox{
+      margin-top:15px;
+      display:grid;
+      gap:12px;
+      max-width:500px;
+    }
+
+    input, textarea{
+      width:100%;
+      padding:12px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.1);
+      color:white;
+      outline:none;
+      font-size:14px;
+    }
+
+    textarea{
+      height:120px;
+      resize:none;
+    }
+
+    button{
+      padding:12px 18px;
+      border-radius:14px;
+      border:none;
+      background:#ff7a00;
+      font-weight:800;
+      cursor:pointer;
+      transition:0.2s;
+    }
+
+    button:hover{
+      transform:translateY(-2px);
+      opacity:0.9;
+    }
+
+    footer{
+      text-align:center;
+      padding:35px 10px;
+      color:rgba(255,255,255,0.5);
+      font-size:12px;
+      border-top:1px solid rgba(255,255,255,0.08);
+      margin-top:50px;
+    }
+
+    /* mobile */
+    @media(max-width:900px){
+      .container{grid-template-columns:1fr;}
+    }
+    @media(max-width:600px){
+      nav{flex-direction:column;gap:10px;}
+      nav a{margin-left:12px;}
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- =========================
+     INTRO
+========================= -->
+<div id="intro">
+  <div class="scanlines"></div>
+  <div class="noise"></div>
+  <div class="strobe" id="strobe"></div>
+
+  <div class="slice" id="slice"></div>
+  <div class="personFlash" id="personFlash"></div>
+
+  <div id="textStage">
+    <div id="mainText">AKUMA</div>
+  </div>
+
+  <!-- SOUND FX -->
+  <audio id="glitchSound" preload="auto">
+    <source src="glitch.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="enterSound" preload="auto">
+    <source src="enter.mp3" type="audio/mpeg">
+  </audio>
+</div>
+
+
+<!-- =========================
+     BLOG SITE
+========================= -->
+<div id="site">
+  <header>
+    <nav>
+      <a class="logo" href="index.html">A<span>K</span>UMA</a>
+      <div>
+        <a href="#blog">Blog</a>
+        <a href="#projects">Projects</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <h1>Welcome to <span>Akuma</span> Blog</h1>
+    <p>
+      這裡是我的個人部落格。<br>
+      我會把遊戲開發、網站設計、影片剪輯、音樂製作的紀錄都放在這裡。
+    </p>
+  </div>
+
+  <div class="container" id="blog">
+    <div>
+      <div class="post" onclick="alert('之後可以做成文章頁面！')">
+        <h2>DevLog #1：我的 AI 虛擬寵物架構</h2>
+        <p>記錄 Unity + Firebase 登入、存檔、對話系統，以及 PC/手機切換的設計方式。</p>
+        <span class="tag">Unity</span>
+        <span class="tag">DevLog</span>
+      </div>
+
+      <div class="post" style="margin-top:18px;" onclick="alert('之後可以做成文章頁面！')">
+        <h2>Cyberpunk UI：為什麼我喜歡 VALORANT</h2>
+        <p>我整理了我最愛的 glitch、硬切、節奏型動畫風格，並拆解如何做成網站。</p>
+        <span class="tag">UI</span>
+        <span class="tag">Design</span>
+      </div>
+
+      <div class="post" style="margin-top:18px;" onclick="alert('之後可以做成文章頁面！')">
+        <h2>Roblox GUI：音量滑桿設計筆記</h2>
+        <p>這篇寫我怎麼把音量滑桿做得更順、更像 Spotify 那種滑動手感。</p>
+        <span class="tag">Roblox</span>
+        <span class="tag">Lua</span>
+      </div>
+    </div>
+
+    <aside class="sidebar">
+      <h3>About Akuma</h3>
+      <p>
+        我喜歡做有世界觀、有氛圍、有節奏的作品。<br><br>
+        這個部落格會持續更新我的創作與開發紀錄。
+      </p>
+    </aside>
+  </div>
+
+  <!-- PROJECTS -->
+  <section class="sectionBlock" id="projects">
+    <h2>Projects</h2>
+    <p>這裡放我的作品（Unity、Roblox、網站設計、剪輯、音樂等）。</p>
+
+    <div class="projectGrid">
+      <div class="projectCard">
+        <h3>AI 虛擬寵物遊戲</h3>
+        <p style="color:rgba(255,255,255,0.7);line-height:1.7;font-size:13px;">
+          Unity 開發，支援手機與 PC，主打 AI 對話互動。
+        </p>
+        <span>Unity</span>
+        <span>Firebase</span>
+      </div>
+
+      <div class="projectCard">
+        <h3>精品化妝品購物網站</h3>
+        <p style="color:rgba(255,255,255,0.7);line-height:1.7;font-size:13px;">
+          高級 UI + 購物車 + 結帳流程，走精品品牌風格。
+        </p>
+        <span>Frontend</span>
+        <span>UI/UX</span>
+      </div>
+
+      <div class="projectCard">
+        <h3>Roblox 音樂播放器 GUI</h3>
+        <p style="color:rgba(255,255,255,0.7);line-height:1.7;font-size:13px;">
+          播放/暫停/切歌/音量滑桿/設定按鈕。
+        </p>
+        <span>Roblox</span>
+        <span>Lua</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="sectionBlock" id="about">
+    <h2>About</h2>
+    <p>
+      我是 Akuma，我喜歡把「世界觀」做成真正能玩的作品。<br>
+      不管是遊戲、網站、影片還是音樂，我都希望能做出一種「氛圍」跟「節奏感」。<br><br>
+      我特別喜歡 Cyberpunk / Valorant 那種 glitch、硬切、數位噪點的美術風格。
+    </p>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="sectionBlock" id="contact">
+    <h2>Contact</h2>
+    <p>想合作或聊天都可以，直接填表單。</p>
+
+    <div class="contactBox">
+      <input type="text" placeholder="你的名字">
+      <input type="email" placeholder="你的 Email">
+      <textarea placeholder="想對我說什麼？"></textarea>
+      <button onclick="alert('目前展示版，之後可接 EmailJS 真的寄信')">Send</button>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 Akuma Blog | Cyberpunk Theme
+  </footer>
+</div>
+
+<script>
+  const intro = document.getElementById("intro");
+  const site = document.getElementById("site");
+  const mainText = document.getElementById("mainText");
+  const stage = document.getElementById("textStage");
+  const strobe = document.getElementById("strobe");
+  const slice = document.getElementById("slice");
+  const personFlash = document.getElementById("personFlash");
+
+  const glitchSound = document.getElementById("glitchSound");
+  const enterSound = document.getElementById("enterSound");
+
+  glitchSound.volume = 0.15;
+  enterSound.volume = 0.12;
+
+  function playGlitch(){
+    glitchSound.currentTime = 0;
+    glitchSound.play().catch(()=>{});
+  }
+
+  function playEnter(){
+    enterSound.currentTime = 0;
+    enterSound.play().catch(()=>{});
+  }
+
+  function flashFrame(){
+    strobe.style.opacity="1";
+    setTimeout(()=> strobe.style.opacity="0", 16);
+  }
+
+  function flashPerson(){
+    personFlash.style.opacity="1";
+    setTimeout(()=> personFlash.style.opacity="0", 16);
+  }
+
+  function tearSlice(){
+    slice.style.opacity="1";
+    slice.style.top = (30 + Math.random()*40) + "%";
+    slice.style.height = (8 + Math.random()*22) + "px";
+    slice.style.transform =
+      `translateX(${(Math.random()>0.5?"-":"")}${80+Math.random()*240}px)`;
+    setTimeout(()=> slice.style.opacity="0", 50);
+  }
+
+  function createGhost(offsetX, offsetY, opacity, blur, color, stretch){
+    const g = document.createElement("div");
+    g.className="ghost " + color;
+    g.textContent="AKUMA";
+    g.style.opacity=opacity;
+    g.style.filter= blur ? `blur(${blur}px)`:"none";
+
+    const jx = Math.floor(Math.random()*20)-10;
+    const jy = Math.floor(Math.random()*14)-7;
+    const scaleX = stretch ? (1.2+Math.random()*0.3) : 1;
+
+    g.style.transform =
+      `translate(calc(-50% + ${offsetX+jx}px),
+                 calc(-50% + ${offsetY+jy}px))
+                 scaleX(${scaleX})`;
+
+    stage.appendChild(g);
+
+    setTimeout(()=>{
+      g.style.opacity = Math.random()>0.5? opacity : 0;
+    }, 30+Math.random()*80);
+
+    setTimeout(()=> g.remove(), 200+Math.random()*200);
+  }
+
+  function heavyBurst(){
+    const count = 20 + Math.floor(Math.random()*21);
+
+    for(let i=0;i<count;i++){
+      const leftTrail = -(40 + Math.random()*260);
+      const y = (Math.random()*30)-15;
+
+      const opacity = 0.1 + Math.random()*0.6;
+      const blur = Math.random()>0.4 ? 0.5+Math.random()*3 : 0;
+
+      let color="white";
+      const r=Math.random();
+      if(r>0.66) color="red";
+      else if(r>0.33) color="blue";
+
+      const stretch = Math.random()>0.6;
+
+      createGhost(leftTrail,y,opacity,blur,color,stretch);
+    }
+
+    if(Math.random()>0.4) tearSlice();
+
+    if(Math.random()>0.72){
+      flashFrame();
+      playGlitch();
+    }
+
+    if(Math.random()>0.82){
+      flashPerson();
+    }
+  }
+
+  /* =========================
+     INTRO SEQUENCE
+  ========================= */
+
+  // first flash
+  setTimeout(()=> {
+    flashFrame();
+    playGlitch();
+  }, 40);
+
+  // slide in sync sound
+  setTimeout(()=>{
+    mainText.style.opacity="1";
+    mainText.style.transition="transform 0.12s linear";
+    mainText.style.transform="translateX(60px)";
+    playGlitch(); // sync
+  }, 120);
+
+  // snap back
+  setTimeout(()=>{
+    mainText.style.transition="transform 0.05s linear";
+    mainText.style.transform="translateX(0)";
+  }, 260);
+
+  // hold clean text (0.5 sec)
+  setTimeout(()=>{
+    mainText.style.opacity="1";
+    mainText.style.transform="translate(0,0)";
+    mainText.style.letterSpacing="-2px";
+  }, 320);
+
+  // explosion start after hold
+  setTimeout(()=>{
+    const glitchInterval = setInterval(()=>{
+
+      heavyBurst();
+
+      const jx=Math.floor(Math.random()*12)-6;
+      const jy=Math.floor(Math.random()*12)-6;
+      mainText.style.transform=`translate(${jx}px,${jy}px)`;
+
+      mainText.style.opacity=Math.random()>0.2?"1":"0";
+
+      if(Math.random()>0.7){
+        mainText.style.letterSpacing = Math.random()>0.5 ? "6px" : "-2px";
+      }
+
+    }, 50);
+
+    setTimeout(()=>{
+      clearInterval(glitchInterval);
+      mainText.style.opacity="1";
+      mainText.style.transform="translate(0,0)";
+      mainText.style.letterSpacing="-2px";
+    }, 900);
+
+  }, 820);
+
+  // final burst
+  setTimeout(()=>{
+    for(let i=0;i<4;i++) heavyBurst();
+    flashFrame();
+    playGlitch();
+  }, 1450);
+
+  // cut to site with glitch fade-in
+  setTimeout(()=>{
+    intro.style.display="none";
+    site.classList.add("glitchIn");
+    playEnter();
+  }, 1750);
+</script>
+
+</body>
+</html>

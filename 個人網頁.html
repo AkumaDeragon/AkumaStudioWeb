@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AKUMA</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="個人網站.css">
+</head>
+
+<body>
+
+<div id="luxLines" aria-hidden="true"></div>
+
+<div id="cursor"></div>
+<div id="cursorDot"></div>
+
+<canvas id="particleCanvas"></canvas>
+<div id="pageVeil"></div>
+
+<!-- ══ BRUTALIST GEOMETRIC INTRO ══ -->
+<div id="geoIntro">
+  <div id="sceneWipe">
+  <div class="wipeCore"></div>
+</div>
+<div id="wipeTransition"></div>
+  <!-- corner brackets -->
+  <div class="geoBracket tl"></div>
+  <div class="geoBracket tr"></div>
+  <div class="geoBracket bl"></div>
+  <div class="geoBracket br"></div>
+
+  <!-- HUD labels -->
+  <div class="geoHud topLeft">SYS://INIT<br>AKUMA_v2.0</div>
+  <div class="geoHud topRight">PORTFOLIO<br>2026</div>
+  <div class="geoHud botLeft">CREATIVE STUDIO<br>TW/TAIPEI</div>
+  <div class="geoHud botRight">LOADING<br><span id="geoLoadPct">000</span>%</div>
+
+  <!-- diagonal accents -->
+  <div class="geoDiag" style="left:22%;top:-20px;transform:rotate(18deg);"></div>
+  <div class="geoDiag" style="right:18%;top:-20px;transform:rotate(-14deg);opacity:.6;"></div>
+
+  <!-- grid lines -->
+  <div class="geoGridH" style="top:33.3%"></div>
+  <div class="geoGridH" style="top:66.6%"></div>
+  <div class="geoGridV" style="left:33.3%"></div>
+  <div class="geoGridV" style="left:66.6%"></div>
+
+  <!-- rotating squares canvas -->
+  <canvas class="geoCanvas" id="geoCanvas"></canvas>
+
+  <!-- white flash -->
+  <div id="geoFlash"></div>
+
+  <!-- main text -->
+  <div id="geoTextBlock">
+    <div id="geoName">AKUMA</div>
+    <div id="geoSub">Personal Blog &nbsp;/&nbsp; Creative Portfolio</div>
+  </div>
+
+  <!-- enter button -->
+  <div id="geoEnterBtn">
+    <div class="geoEnterRing">
+      <div class="geoEnterIcon">▶</div>
+    </div>
+    <h2>CLICK TO ENTER</h2>
+    <p>點擊進入 · Enable sound</p>
+  </div>
+
+
+
+  <!-- SCENE 2：AKUMA 5 → 7 → 9 字樣動畫（由個人網頁(1)結合） -->
+  <div id="akumaStageScene">
+    <div class="personFlash" id="personFlash"></div>
+
+    <div id="textStage">
+      <div id="mainText">AKUMA</div>
+
+      <div id="stageWords">
+        <div>akuma akuma akuma</div>
+        <div>akuma akuma akuma</div>
+        <div>akuma akuma akuma</div>
+        <div>akuma akuma akuma</div>
+        <div>akuma akuma akuma</div>
+        <div>akuma akuma akuma</div>
+        <div>akuma akuma akuma</div>
+        <div>akuma akuma akuma</div>
+        <div>akuma akuma akuma</div>
+      </div>
+    </div>
+  </div>
+
+  <audio id="glitchSound" preload="none" src="glitch.mp3"></audio>
+  <audio id="enterSound" preload="none" src="enter.mp3"></audio>
+  <audio id="stageHitSound" preload="none" src="stage-hit.mp3"></audio>
+  <audio id="siteBgm" preload="auto" src="site-bgm.mp3" loop></audio>
+
+</div>
+<!-- ══ END INTRO ══ -->
+
+<div id="site">
+
+<header>
+  <nav>
+    <a class="logo" href="#">A<span>K</span>UMA</a>
+
+    <div class="navLinks">
+      <a href="#about">About</a>
+      <a href="#myjourney">My Journey</a>
+      <a href="#projects">Projects</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero bannerHero">
+  <div class="heroTopLine"></div>
+  <div class="heroBottomLine"></div>
+
+  <!-- decorative corner brackets -->
+  <div class="heroBracket tl"></div>
+  <div class="heroBracket br"></div>
+  <!-- scan stripe accent -->
+  <div class="heroScanStripe"></div>
+  <!-- diagonal neon slash -->
+  <div class="heroSlash"></div>
+  <!-- system tag -->
+  <div class="heroSysTag">SYS://AKUMA_PORTFOLIO_v2.0</div>
+
+  <div class="heroLeft">
+    <h1 class="stageTitle">
+      <span data-text="akuma">akuma</span>
+    </h1>
+
+    <p class="subTitle">personal blog / creative portfolio</p>
+
+    <div class="heroTextBox">
+      <p>
+        我把遊戲、網站、影像和音樂做成自己的世界觀。<br>
+        這裡會記錄我的作品、經歷、想法和創作過程。
+      </p>
+    </div>
+  </div>
+
+  <div class="heroRight bannerProfile">
+    <div class="profileFrame">
+      <div class="scarX"></div>
+      <img src="akuma2.png" alt="Akuma Profile">
+      <div class="profileGlow"></div>
+    </div>
+  </div>
+  </div>
+
+</section>
+
+<section class="section" id="about">
+  <h2 class="sectionTitle">About Me</h2>
+
+  <div class="sectionDeco" aria-hidden="true">
+    <svg class="decoPath" viewBox="0 0 420 60" fill="none">
+      <path d="M 10,45 Q 80,8 180,30 Q 260,48 380,15" stroke="rgba(255,122,0,0.3)" stroke-width="1" stroke-dasharray="5 4" fill="none"/>
+    </svg>
+    <!-- SVG 幾何終點 -->
+    <svg class="decoGeoEnd" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="6" y="6" width="10" height="10" stroke="rgba(255,122,0,0.85)" stroke-width="1.2" transform="rotate(45 11 11)"/>
+      <circle cx="11" cy="11" r="2" fill="#ff7a00" opacity="0.9"/>
+    </svg>
+    <!-- SVG 幾何起點 -->
+    <svg class="decoGeoStart" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="7,1 13,7 7,13 1,7" stroke="rgba(255,122,0,0.5)" stroke-width="1" fill="none"/>
+    </svg>
+  </div>
+
+  <div class="aboutBox decoratedBox">
+    <div class="boxTag">ABOUT / AKUMA</div>
+    <p>
+      我是 Akuma，喜歡做有氛圍、有節奏、有世界觀的作品。<br><br>
+      我的風格偏向 Cyberpunk、Glitch、Dark UI 和 Neon。  
+      我想把網站、影像、遊戲、音樂都做成像一個完整宇宙一樣的東西。
+    </p>
+  </div>
+</section>
+
+<section class="socialStripSection">
+  <div class="socialStrip">
+
+    <a href="https://instagram.com/akuma.deragon._" target="_blank" class="socialSlash">
+      <div class="socialIcon">
+        <img src="instagram.png" alt="Instagram">
+      </div>
+      <div class="socialText">
+        <span>IG</span>
+        <strong>Instagram</strong>
+      </div>
+    </a>
+
+    <a href="https://discord.com/channels/679627507003293696/900736763436339302/1498738685599023104" target="_blank" class="socialSlash">
+      <div class="socialIcon">
+        <img src="facebook.png" alt="Facebook">
+      </div>
+      <div class="socialText">
+        <span>FB</span>
+        <strong>Facebook</strong>
+      </div>
+    </a>
+
+    <a href="https://www.tiktok.com/@akufilmsstudio?is_from_webapp=1&sender_device=pc" target="_blank" class="socialSlash">
+      <div class="socialIcon">
+        <img src="tiktok.png" alt="TikTok">
+      </div>
+      <div class="socialText">
+        <span>TT</span>
+        <strong>TikTok</strong>
+      </div>
+    </a>
+
+    <a href="https://www.youtube.com/@akumaderagon" target="_blank" class="socialSlash">
+      <div class="socialIcon">
+        <img src="youtube.png" alt="YouTube">
+      </div>
+      <div class="socialText">
+        <span>YT</span>
+        <strong>YouTube</strong>
+      </div>
+    </a>
+
+    <a href="https://discord.gg/h5Q9GkmM" target="_blank" class="socialSlash">
+      <div class="socialIcon">
+        <img src="discord.png" alt="Discord">
+      </div>
+      <div class="socialText">
+        <span>DC</span>
+        <strong>Discord</strong>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<div class="luxDivider" aria-hidden="true"><div class="luxDivDiamond"></div><div class="luxDivDiamond"></div><div class="luxDivDiamond"></div></div>
+
+<section class="section" id="myjourney">
+  <h2 class="sectionTitle">My Journey</h2>
+
+  <div class="sectionDeco" aria-hidden="true">
+    <svg class="decoPath" viewBox="0 0 420 60" fill="none">
+      <path d="M 10,30 L 60,30 L 80,10 L 120,50 L 160,10 L 200,50 L 240,10 L 280,50 L 320,15 L 380,30 L 410,30" stroke="rgba(255,122,0,0.28)" stroke-width="1" stroke-dasharray="4 4" fill="none"/>
+    </svg>
+    <svg class="decoGeoEnd" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="11" cy="11" r="8" stroke="rgba(255,122,0,0.7)" stroke-width="1"/>
+      <circle cx="11" cy="11" r="4" stroke="rgba(255,122,0,0.5)" stroke-width="1"/>
+      <circle cx="11" cy="11" r="1.5" fill="#ff7a00"/>
+    </svg>
+    <svg class="decoGeoStart" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="7" y1="1" x2="7" y2="13" stroke="rgba(255,122,0,0.4)" stroke-width="1"/>
+      <line x1="1" y1="7" x2="13" y2="7" stroke="rgba(255,122,0,0.4)" stroke-width="1"/>
+      <rect x="4" y="4" width="6" height="6" stroke="rgba(255,122,0,0.3)" stroke-width="0.8" fill="none"/>
+    </svg>
+  </div>
+
+  <div class="horizontalTimeline">
+
+    <div class="timePoint">
+      <button class="dot" type="button"></button>
+      <span>01 / Start</span>
+
+      <div class="story">
+        <p>
+          這是故事的開始。那時候我開始真正思考自己想做什麼。
+        </p>
+      </div>
+    </div>
+
+    <div class="timePoint">
+      <button class="dot" type="button"></button>
+      <span>04 / Explore</span>
+
+      <div class="story">
+        <p>
+          我開始接觸不同的創作方式，像是網站、剪輯、音樂和遊戲。
+        </p>
+      </div>
+    </div>
+
+    <div class="timePoint">
+      <button class="dot" type="button"></button>
+      <span>07 / Change</span>
+
+      <div class="story">
+        <p>
+          某些事情改變了我的方向，也讓我重新看待創作。
+        </p>
+      </div>
+    </div>
+
+    <div class="timePoint">
+      <button class="dot" type="button"></button>
+      <span>11 / Build</span>
+
+      <div class="story">
+        <p>
+          我開始把想法真的做出來，不只是想，而是慢慢變成作品。
+        </p>
+      </div>
+    </div>
+
+    <div class="timePoint">
+      <button class="dot" type="button"></button>
+      <span>15 / Growth</span>
+
+      <div class="story">
+        <p>
+          開始把網站、影片、音樂和遊戲慢慢變成自己的世界。
+        </p>
+      </div>
+    </div>
+
+    <div class="timePoint">
+      <button class="dot" type="button"></button>
+      <span>20 / Future</span>
+
+      <div class="story">
+        <p>
+          未來我想做出更完整的作品，包含個人品牌、工作室和更多大型專案。
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="projects">
+  <h2 class="sectionTitle">Projects</h2>
+
+  <div class="sectionDeco" aria-hidden="true">
+    <svg class="decoPath" viewBox="0 0 420 60" fill="none">
+      <path d="M 10,50 Q 60,5 140,28 Q 220,50 310,20 Q 360,8 410,32" stroke="rgba(255,122,0,0.3)" stroke-width="1" stroke-dasharray="5 4" fill="none"/>
+    </svg>
+    <svg class="decoGeoEnd" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="3" y="3" width="16" height="16" rx="2" stroke="rgba(255,122,0,0.7)" stroke-width="1"/>
+      <line x1="3" y1="8" x2="19" y2="8" stroke="rgba(255,122,0,0.4)" stroke-width="0.8"/>
+      <rect x="6" y="12" width="4" height="4" fill="rgba(255,122,0,0.5)" rx="0.5"/>
+    </svg>
+    <svg class="decoGeoStart" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="7,1 13,7 7,13 1,7" stroke="rgba(255,122,0,0.5)" stroke-width="1" fill="none"/>
+      <polygon points="7,4 10,7 7,10 4,7" fill="rgba(255,122,0,0.2)"/>
+    </svg>
+  </div>
+
+  <p class="sectionIntro">
+    把滑鼠移到卡片上，它會往旁邊吃空間；點一下可以打開詳細資訊。
+  </p>
+
+  <div class="projectFlex">
+
+    <div class="projectCard" data-project="pet">
+      <div class="projectPreview">
+        <img src="pet-preview.png" alt="AI Virtual Pet Preview">
+      </div>
+
+      <div class="projectNumber">01</div>
+
+      <div class="projectContent">
+        <h3>AI Virtual Pet</h3>
+        <p>AI 虛擬寵物 + Firebase + 多平台。</p>
+        <button class="openProject" type="button">Click to open</button>
+      </div>
+    </div>
+
+    <div class="projectCard" data-project="cyberpunk">
+      <div class="projectPreview">
+        <img src="cyberpunk-preview.png" alt="Cyberpunk Website Preview">
+      </div>
+
+      <div class="projectNumber">02</div>
+
+      <div class="projectContent">
+        <h3>Cyberpunk Website</h3>
+        <p>Glitch UI + 個人網站動畫。</p>
+        <button class="openProject" type="button">Click to open</button>
+      </div>
+    </div>
+
+    <div class="projectCard" data-project="roblox">
+      <div class="projectPreview">
+        <img src="roblox-preview.png" alt="Roblox Music Player Preview">
+      </div>
+
+      <div class="projectNumber">03</div>
+
+      <div class="projectContent">
+        <h3>Roblox Music Player</h3>
+        <p>播放、暫停、切歌、音量滑桿 GUI。</p>
+        <button class="openProject" type="button">Click to open</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="projectDetail" id="projectDetail">
+    <button class="closeProject" type="button">×</button>
+
+    <div class="detailImage">
+      <img id="detailImage" src="cyberpunk-preview.png" alt="Project Preview">
+    </div>
+
+    <div class="detailText">
+      <p class="detailLabel">SELECTED PROJECT</p>
+      <h3 id="detailTitle">Cyberpunk Website</h3>
+      <p id="detailDesc">
+        這是一個以 Cyberpunk、Glitch、Dark UI 為核心風格的個人網站。
+      </p>
+
+      <div class="detailGrid">
+        <div>
+          <span>TYPE</span>
+          <strong id="detailType">Website</strong>
+        </div>
+
+        <div>
+          <span>STYLE</span>
+          <strong id="detailStyle">Cyberpunk / Glitch</strong>
+        </div>
+
+        <div>
+          <span>STATUS</span>
+          <strong id="detailStatus">Building</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="gallery">
+  <h2 class="sectionTitle">Gallery</h2>
+
+  <div class="sectionDeco" aria-hidden="true">
+    <svg class="decoPath" viewBox="0 0 420 60" fill="none">
+      <path d="M 10,40 Q 100,5 200,32 Q 300,55 410,18" stroke="rgba(255,122,0,0.3)" stroke-width="1" stroke-dasharray="5 4" fill="none"/>
+    </svg>
+    <svg class="decoGeoEnd" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="3" y="3" width="16" height="16" rx="1" stroke="rgba(255,122,0,0.7)" stroke-width="1"/>
+      <circle cx="8" cy="8" r="2" stroke="rgba(255,122,0,0.5)" stroke-width="0.8"/>
+      <polyline points="3,16 7,11 10,14 14,9 19,16" stroke="rgba(255,122,0,0.6)" stroke-width="0.9" fill="none"/>
+    </svg>
+    <svg class="decoGeoStart" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="2" width="10" height="10" rx="1" stroke="rgba(255,122,0,0.45)" stroke-width="1" fill="none"/>
+      <rect x="5" y="5" width="4" height="4" fill="rgba(255,122,0,0.25)" rx="0.5"/>
+    </svg>
+  </div>
+
+  <div class="grid">
+    <a class="card decoratedBox galleryLink" href="gallery-photo.html">
+      <div class="boxTag">PHOTO</div>
+      <h3>Photo Log</h3>
+      <p>拍攝紀錄與生活照片。</p>
+      <div class="cardArrow">→ OPEN</div>
+    </a>
+
+    <a class="card decoratedBox galleryLink" href="gallery-works.html">
+      <div class="boxTag">WORKS</div>
+      <h3>Works</h3>
+      <p>網站畫面、遊戲畫面與設計截圖。</p>
+      <div class="cardArrow">→ OPEN</div>
+    </a>
+
+    <a class="card decoratedBox galleryLink" href="gallery-bts.html">
+      <div class="boxTag">BTS</div>
+      <h3>Behind The Scenes</h3>
+      <p>專案製作過程紀錄。</p>
+      <div class="cardArrow">→ OPEN</div>
+    </a>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <h2 class="sectionTitle">Contact</h2>
+
+  <div class="sectionPlane" aria-hidden="true">
+    <svg class="planePath" viewBox="0 0 420 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 10,55 Q 100,5 230,35 Q 330,60 410,18" stroke="rgba(255,122,0,0.35)" stroke-width="1.2" stroke-dasharray="6 5" fill="none"/>
+    </svg>
+    <!-- 幾何箭頭終點 -->
+    <svg style="position:absolute;right:2%;top:10px;width:22px;height:22px;opacity:0;animation:decoIconIn .6s ease forwards;animation-delay:2.2s;" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="2" y1="11" x2="18" y2="11" stroke="rgba(255,122,0,0.8)" stroke-width="1.2"/>
+      <polyline points="13,6 19,11 13,16" stroke="rgba(255,122,0,0.8)" stroke-width="1.2" fill="none"/>
+      <circle cx="4" cy="11" r="1.5" fill="rgba(255,122,0,0.5)"/>
+    </svg>
+  </div>
+
+  <div class="contactBox decoratedBox">
+    <div class="boxTag">CONTACT</div>
+    <p>Instagram：<span class="orange">akuma.deragon._</span></p>
+    <p>Email：<span class="orange">akumaderagon@gmail.com</span></p>
+    <p>Phone：<span class="orange">0912255569</span></p>
+  </div>
+</section>
+
+<div class="mailWrap">
+  <div class="mailHeader">
+    <p class="mailTag">DIRECT MESSAGE</p>
+    <h3>Send Me A Message</h3>
+    <p class="mailSub">
+      如果你有合作、拍攝、網站、創作相關的想法，<br>
+      可以直接從這裡寄給我。
+    </p>
+  </div>
+
+  <form action="https://formspree.io/f/xgorgedr" method="POST" class="mailForm">
+    <div class="inputBox">
+      <input type="text" name="name" placeholder="Your Name" required>
+    </div>
+
+    <div class="inputBox">
+      <input type="email" name="email" placeholder="Your Email" required>
+    </div>
+
+    <div class="inputBox">
+      <textarea name="message" placeholder="Write your message..." required></textarea>
+    </div>
+
+    <button type="submit" class="sendBtn">
+      <span>SEND MESSAGE</span>
+    </button>
+  </form>
+</div>
+
+<footer>
+  © 2026 Akuma | Designed & Coded by Akuma
+</footer>
+
+</div>
+
+<div id="bgmControl">
+
+  <!-- 橘色三角（收合小 / 展開大） -->
+  <div id="bgmTriangle">
+    <button id="muteBtn" type="button">ON</button>
+  </div>
+
+  <!-- BGM VOLUME 文字：獨立在三角外，不受 clip-path 影響 -->
+  <svg id="bgmTriLabel" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <path id="diag" d="M 20,70 L 70,20"/>
+    </defs>
+    <text font-size="7" font-weight="900" fill="white" letter-spacing="1.5" text-anchor="middle">
+      <textPath href="#diag" startOffset="50%">BGM VOLUME</textPath>
+    </text>
+  </svg>
+
+  <!-- 滑桿 + 數值：展開後顯示 -->
+  <div id="bgmSliderWrap">
+    <span id="bgmPct">20%</span>
+    <input id="volumeSlider" type="range" min="0" max="100" step="1" value="20">
+  </div>
+
+</div>
+<script>
+/* ── INTRO：Click To Enter → AKUMA 5/7/9 → Game-like website transition ── */
+const geoIntro      = document.getElementById("geoIntro");
+const geoCanvas     = document.getElementById("geoCanvas");
+const geoFlash      = document.getElementById("geoFlash");
+const geoTextBlock  = document.getElementById("geoTextBlock");
+const geoName       = document.getElementById("geoName");
+const geoSub        = document.getElementById("geoSub");
+const geoEnterBtn   = document.getElementById("geoEnterBtn");
+const geoLoadPct    = document.getElementById("geoLoadPct");
+const site          = document.getElementById("site");
+
+const akumaStageScene = document.getElementById("akumaStageScene");
+const mainText        = document.getElementById("mainText");
+const stageWords      = document.getElementById("stageWords");
+const personFlash     = document.getElementById("personFlash");
+
+const glitchSound = document.getElementById("glitchSound");
+const enterSound  = document.getElementById("enterSound");
+const stageHitSound = document.getElementById("stageHitSound");
+const siteBgm = document.getElementById("siteBgm");
+const bgmControl   = document.getElementById("bgmControl");
+const bgmTriangle  = document.getElementById("bgmTriangle");
+const bgmSliderWrap= document.getElementById("bgmSliderWrap");
+const muteBtn      = document.getElementById("muteBtn");
+const volumeSlider = document.getElementById("volumeSlider");
+const bgmPct       = document.getElementById("bgmPct");
+
+let siteBgmMuted  = false;
+let siteBgmVolume = 0.20;
+let bgmPanelOpen  = false;
+
+function playStageHit(){
+  if(!stageHitSound) return;
+
+  try{
+    stageHitSound.pause();
+    stageHitSound.currentTime = 0;
+    stageHitSound.volume = 0.25;
+
+    const playPromise = stageHitSound.play();
+
+    if(playPromise !== undefined){
+      playPromise.catch(err=>{
+        console.log("stage sound blocked:", err);
+      });
+    }
+
+  }catch(err){
+    console.log(err);
+  }
+}
+
+let introStarted = false;
+let animRunning = true;
+
+/* ── Skip intro：sessionStorage 記錄，任何方式返回都有效 ── */
+function skipIntro(){
+  animRunning = false;
+  if(geoIntro){ geoIntro.style.display = "none"; geoIntro.classList.add("hidden"); }
+  if(site){
+    site.style.visibility = "visible";
+    site.style.opacity    = "1";
+    site.style.transform  = "none";
+  }
+  showBgmControl();
+}
+
+(function(){
+  const shouldSkip =
+    sessionStorage.getItem("akuma_entered") === "1" ||
+    new URLSearchParams(window.location.search).get("skip") === "1";
+
+  if(shouldSkip){
+    skipIntro();
+    history.replaceState(null,"",window.location.pathname + window.location.hash);
+  }
+
+  /* bfcache 側鍵返回 */
+  window.addEventListener("pageshow", function(e){
+    if(e.persisted){ skipIntro(); }
+  });
+})();
+
+function playGlitch(){
+  if(!glitchSound) return;
+  glitchSound.volume = 0.5;
+  glitchSound.currentTime = 0;
+  glitchSound.play().catch(()=>{});
+}
+
+function playEnter(){
+  if(!enterSound) return;
+  enterSound.volume = 0.5;
+  enterSound.currentTime = 0;
+  enterSound.play().catch(()=>{});
+}
+function unlockSiteBgm(){
+  if(!siteBgm) return;
+
+  siteBgm.volume = 0;
+  siteBgm.muted = true;
+
+  const p = siteBgm.play();
+  if(p !== undefined){
+    p.catch(()=>{});
+  }
+}
+
+function syncBgmUI(){
+  const pct = Math.round(siteBgmVolume * 100);
+  if(volumeSlider) volumeSlider.value = pct;
+  if(bgmPct) bgmPct.textContent = pct + "%";
+  if(muteBtn){
+    muteBtn.textContent = siteBgmMuted ? "MUTE" : "ON";
+    muteBtn.classList.toggle("muted", siteBgmMuted);
+  }
+  if(bgmTriangle) bgmTriangle.classList.toggle("open", bgmPanelOpen);
+  if(bgmSliderWrap) bgmSliderWrap.classList.toggle("open", bgmPanelOpen);
+}
+
+function showBgmControl(){
+  if(!bgmControl) return;
+  /* 確保直接掛在 body，不受任何祖先 transform/filter 影響 */
+  if(bgmControl.parentNode !== document.body){
+    document.body.appendChild(bgmControl);
+  }
+  bgmControl.style.display  = "block";
+  bgmControl.style.position = "fixed";
+  bgmControl.style.right    = "0";
+  bgmControl.style.bottom   = "0";
+  bgmControl.style.left     = "auto";
+  bgmControl.style.top      = "auto";
+  bgmControl.classList.add("show");
+}
+
+function playSiteBgm(){
+  if(!siteBgm) return;
+  siteBgmVolume = 0.20;
+  siteBgm.volume = siteBgmVolume;
+  siteBgm.muted = siteBgmMuted;
+  syncBgmUI();
+  const p = siteBgm.play();
+  if(p !== undefined){
+    p.catch(err=>{ console.log("site bgm blocked:", err); });
+  }
+}
+
+// 點三角展開/收合
+if(bgmTriangle){
+  bgmTriangle.addEventListener("click", (e)=>{
+    // muteBtn 在三角內，避免重複觸發
+    if(e.target === muteBtn) return;
+    e.stopPropagation();
+    bgmPanelOpen = !bgmPanelOpen;
+    syncBgmUI();
+  });
+}
+
+if(muteBtn){
+  muteBtn.addEventListener("click", (e)=>{
+    e.stopPropagation();
+    siteBgmMuted = !siteBgmMuted;
+    if(siteBgm) siteBgm.muted = siteBgmMuted;
+    syncBgmUI();
+  });
+}
+
+document.addEventListener("click", (e)=>{
+  if(bgmPanelOpen && bgmControl && !bgmControl.contains(e.target)){
+    bgmPanelOpen = false;
+    syncBgmUI();
+  }
+});
+
+if(volumeSlider){
+  volumeSlider.addEventListener("input", ()=>{
+    siteBgmVolume = Number(volumeSlider.value) / 100;
+    if(siteBgm){
+      siteBgm.volume = siteBgmVolume;
+      siteBgmMuted = siteBgmVolume <= 0;
+      siteBgm.muted = siteBgmMuted;
+    }
+    syncBgmUI();
+  });
+}
+
+syncBgmUI();
+
+/* BGM canvas removed - using CSS clip-path instead */
+
+function randomBetween(a, b){
+  return a + Math.random() * (b - a);
+}
+
+/* ── Geometric click screen canvas ── */
+const ctx2 = geoCanvas ? geoCanvas.getContext("2d") : null;
+let squares = [];
+
+function resizeGeo(){
+  if(!geoCanvas) return;
+  geoCanvas.width = window.innerWidth;
+  geoCanvas.height = window.innerHeight;
+}
+resizeGeo();
+window.addEventListener("resize", resizeGeo);
+
+function spawnSquare(){
+  if(!geoCanvas) return;
+  const size = randomBetween(18, 120);
+  squares.push({
+    x: randomBetween(-100, window.innerWidth + 100),
+    y: randomBetween(-100, window.innerHeight + 100),
+    size,
+    rot: randomBetween(0, Math.PI * 2),
+    rotSpeed: randomBetween(0.004, 0.028) * (Math.random() > .5 ? 1 : -1),
+    alpha: randomBetween(0.04, 0.38),
+    filled: Math.random() > 0.72,
+    color: Math.random() > 0.82 ? "rgba(255,122,0," : "rgba(255,255,255,",
+    vx: randomBetween(-0.3, 0.3),
+    vy: randomBetween(-0.2, 0.15),
+    life: 1,
+    decay: randomBetween(0.0005, 0.0018)
+  });
+}
+
+for(let i = 0; i < 48; i++) spawnSquare();
+
+function drawSquares(){
+  if(!ctx2 || !geoCanvas) return;
+  ctx2.clearRect(0, 0, geoCanvas.width, geoCanvas.height);
+
+  squares.forEach((s, i)=>{
+    s.rot += s.rotSpeed;
+    s.x += s.vx;
+    s.y += s.vy;
+    s.life -= s.decay;
+
+    if(s.life <= 0){
+      squares[i] = null;
+      return;
+    }
+
+    const alpha = s.alpha * s.life;
+    ctx2.save();
+    ctx2.translate(s.x, s.y);
+    ctx2.rotate(s.rot);
+
+    const half = s.size / 2;
+    if(s.filled){
+      ctx2.fillStyle = s.color + alpha + ")";
+      ctx2.fillRect(-half, -half, s.size, s.size);
+    }else{
+      ctx2.strokeStyle = s.color + alpha + ")";
+      ctx2.lineWidth = randomBetween(.5, 1.8);
+      ctx2.strokeRect(-half, -half, s.size, s.size);
+    }
+
+    ctx2.restore();
+  });
+
+  squares = squares.filter(Boolean);
+  while(squares.length < 48) spawnSquare();
+
+  if(animRunning) requestAnimationFrame(drawSquares);
+}
+drawSquares();
+
+/* ── Loading counter ── */
+let pct = 0;
+const loadTimer = setInterval(()=>{
+  pct += Math.floor(randomBetween(2, 11));
+  if(pct >= 100){
+    pct = 100;
+    clearInterval(loadTimer);
+  }
+  if(geoLoadPct) geoLoadPct.textContent = String(pct).padStart(3, "0");
+}, 55);
+
+setTimeout(()=>geoName && geoName.classList.add("show"), 300);
+setTimeout(()=>geoSub && geoSub.classList.add("show"), 900);
+setTimeout(()=>geoEnterBtn && geoEnterBtn.classList.add("show"), 1400);
+
+function doFlash(opacity, duration){
+  return new Promise(resolve=>{
+    if(!geoFlash){ resolve(); return; }
+
+    geoFlash.style.display = "block";
+    geoFlash.style.transition = "none";
+    geoFlash.style.opacity = opacity;
+
+    setTimeout(()=>{
+      geoFlash.style.transition = `opacity ${duration}ms ease`;
+      geoFlash.style.opacity = "0";
+      setTimeout(resolve, duration + 20);
+    }, 35);
+  });
+}
+
+async function startGeoIntro(){
+
+  if(introStarted) return;
+  unlockSiteBgm();
+  if(stageHitSound){
+    stageHitSound.volume = 0;
+    stageHitSound.play().then(()=>{
+      stageHitSound.pause();
+      stageHitSound.currentTime = 0;
+      stageHitSound.volume = 0.35;
+    }).catch(()=>{});
+  }
+
+  if(!geoEnterBtn || !geoEnterBtn.classList.contains("show")) return;
+
+  introStarted = true;
+  geoEnterBtn.style.pointerEvents = "none";
+  playGlitch();
+
+  if(geoTextBlock) geoTextBlock.classList.add("hide");
+  geoEnterBtn.classList.add("hide");
+
+  await doFlash("0.45", 70);
+  await new Promise(r=>setTimeout(r, 80));
+
+  if(geoFlash){
+    geoFlash.style.opacity = "0";
+    geoFlash.style.display = "none";
+  }
+
+  startAkumaStage();
+}
+
+if(geoEnterBtn){
+  geoEnterBtn.addEventListener("click", e=>{
+    e.stopPropagation();
+    startGeoIntro();
+  });
+}
+
+if(geoIntro){
+  geoIntro.addEventListener("click", ()=>{
+    if(geoEnterBtn && geoEnterBtn.classList.contains("show")){
+      startGeoIntro();
+    }
+  });
+}
+
+/* ── AKUMA 5 → 7 → 9 scene ── */
+function flashWhite(){
+  if(!stageWords) return;
+  stageWords.classList.add("flashWhite");
+  setTimeout(()=>stageWords.classList.remove("flashWhite"), 45);
+}
+
+function startAkumaStage(){
+  if(!akumaStageScene) return enterWebsite();
+
+  akumaStageScene.classList.add("show");
+
+  setTimeout(()=>{
+    if(!mainText) return;
+    mainText.style.opacity = "1";
+    mainText.style.transform = "translateX(0)";
+  }, 160);
+
+  setTimeout(()=>{
+    if(!personFlash) return;
+    personFlash.style.opacity = "1";
+    personFlash.classList.add("tripleFlashOut");
+
+    setTimeout(()=>{
+      personFlash.classList.remove("tripleFlashOut");
+      personFlash.style.opacity = "1";
+    }, 180);
+  }, 420);
+
+  setTimeout(()=>{
+    if(mainText) mainText.style.opacity = "0";
+    stageEffect();
+  }, 720);
+}
+
+function stageEffect(){
+  if(!stageWords){
+    enterWebsite();
+    return;
+  }
+
+  stageWords.style.opacity = "1";
+
+ stageWords.className = "five";
+flashWhite();
+playStageHit();
+
+  setTimeout(()=>{
+    stageWords.className = "seven";
+    flashWhite();
+    playStageHit();
+  }, 280);
+
+  setTimeout(()=>{
+    stageWords.className = "nine merge";
+    flashWhite();
+    playStageHit();
+  }, 560);
+
+  setTimeout(()=>flashWhite(), 760);
+
+  setTimeout(()=>{
+    
+    stageWords.classList.add("explode");
+    if(personFlash) personFlash.classList.add("tripleFlashOut");
+  }, 980);
+
+  setTimeout(()=>{
+    stageWords.style.opacity = "0";
+    stageWords.className = "";
+
+    if(personFlash){
+      personFlash.style.opacity = "0";
+      personFlash.classList.remove("tripleFlashOut");
+    }
+
+    if(akumaStageScene) akumaStageScene.classList.add("finish");
+  }, 1500);
+
+  setTimeout(()=>enterWebsite(), 1720);
+}
+
+function enterWebsite(){
+  geoFlash.style.opacity = "0";
+  geoFlash.style.display = "none";
+
+  /* 記錄已進入過，之後任何方式返回都跳過 intro */
+  sessionStorage.setItem("akuma_entered", "1");
+
+  geoIntro.classList.add("introCollapse");
+
+  setTimeout(()=>{
+    animRunning = false;
+
+    geoIntro.style.display = "none";
+    geoIntro.classList.add("hidden");
+
+    /* 黑幕遮住進場卡頓 */
+    const blackout = document.createElement("div");
+    blackout.id = "enterBlackout";
+    blackout.style.cssText = [
+      "position:fixed","inset:0","background:#000","z-index:99999",
+      "pointer-events:none","opacity:1","transition:opacity 0.8s ease"
+    ].join(";");
+    document.body.appendChild(blackout);
+
+    site.style.visibility = "visible";
+    site.classList.add("gameEnter");
+    showBgmControl();
+    playEnter();
+    playSiteBgm();
+
+    const title = document.querySelector(".stageTitle");
+    if(title) title.classList.add("animate");
+
+    /* 1.2秒後黑幕淡出 */
+    setTimeout(()=>{
+      blackout.style.opacity = "0";
+      setTimeout(()=> blackout.remove(), 850);
+    }, 1200);
+
+  }, 520);
+}
+
+/* ── Gallery card click transition ── */
+document.querySelectorAll("a.galleryLink").forEach(link => {
+  link.addEventListener("click", function(e){
+    e.preventDefault();
+    const href = this.href;
+
+    const flash = document.createElement("div");
+    flash.style.cssText = [
+      "position:fixed","inset:0","z-index:999999",
+      "background:#fff","opacity:0","pointer-events:none",
+      "transition:opacity 0.06s ease"
+    ].join(";");
+    document.body.appendChild(flash);
+
+    /* 閃 1 → 滅 → 閃 2 → fade 黑 0.8s → 跳頁 */
+    requestAnimationFrame(()=>{
+      flash.style.opacity = "1";                        // 第一閃亮
+      setTimeout(()=>{
+        flash.style.opacity = "0";                      // 第一閃滅
+        setTimeout(()=>{
+          flash.style.opacity = "1";                    // 第二閃亮
+          setTimeout(()=>{
+            flash.style.opacity = "0";                  // 第二閃滅
+            setTimeout(()=>{
+              flash.style.background = "#000";
+              flash.style.transition = "opacity 0.8s ease";
+              flash.style.opacity    = "1";             // fade 黑
+              setTimeout(()=>{ window.location.href = href; }, 820);
+            }, 60);
+          }, 60);
+        }, 60);
+      }, 60);
+    });
+  });
+});
+document.querySelectorAll(".timePoint .dot").forEach(dot=>{
+  dot.addEventListener("click", ()=>{
+    const point = dot.closest(".timePoint");
+    const story = point.querySelector(".story");
+
+    point.classList.toggle("open");
+
+    if(story.style.maxHeight){
+      story.style.maxHeight = null;
+    }else{
+      story.style.maxHeight = story.scrollHeight + "px";
+    }
+  });
+});
+
+/* ── Custom cursor ── */
+const cursor = document.getElementById("cursor");
+const cursorDot = document.getElementById("cursorDot");
+
+let mouseX = 0;
+let mouseY = 0;
+let cursorX = 0;
+let cursorY = 0;
+
+document.addEventListener("mousemove", e=>{
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+
+  if(cursorDot){
+    cursorDot.style.transform = `translate(${mouseX - 3}px, ${mouseY - 3}px)`;
+  }
+});
+
+function animateCursor(){
+  cursorX += (mouseX - cursorX) * 0.14;
+  cursorY += (mouseY - cursorY) * 0.14;
+
+  if(cursor){
+    cursor.style.transform = `translate(${cursorX - 16}px, ${cursorY - 16}px)`;
+  }
+
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+document.querySelectorAll("a, button, .card, .dot, .projectCard").forEach(el=>{
+  el.addEventListener("mouseenter", ()=>cursor && cursor.classList.add("expand"));
+  el.addEventListener("mouseleave", ()=>cursor && cursor.classList.remove("expand"));
+});
+
+/* ── Project detail panel ── */
+const projectData = {
+  pet: {
+    image: "pet-preview.png",
+    title: "AI Virtual Pet",
+    desc: "這是一個 AI 虛擬寵物專案，主要概念是讓使用者可以和自己的虛擬角色聊天、互動、培養關係，之後也可以加入客製化外型、心情系統和跨平台存檔。",
+    type: "Game / App",
+    style: "AI / Cute / Interactive",
+    status: "Planning"
+  },
+  cyberpunk: {
+    image: "cyberpunk-preview.png",
+    title: "Cyberpunk Website",
+    desc: "這是一個以 Cyberpunk、Glitch、Dark UI 為核心風格的個人網站。它不只是作品集，而是把我的世界觀、創作、影像和故事整合在一起。",
+    type: "Website",
+    style: "Cyberpunk / Glitch",
+    status: "Building"
+  },
+  roblox: {
+    image: "roblox-preview.png",
+    title: "Roblox Music Player",
+    desc: "這是一個 Roblox Studio 裡面的音樂播放器 GUI，包含播放、暫停、切換歌曲、音量控制和齒輪設定按鈕，目標是做成更完整的遊戲內音樂系統。",
+    type: "Roblox GUI",
+    style: "Game UI / Music",
+    status: "Testing"
+  }
+};
+
+const projectDetail = document.getElementById("projectDetail");
+const detailImage = document.getElementById("detailImage");
+const detailTitle = document.getElementById("detailTitle");
+const detailDesc = document.getElementById("detailDesc");
+const detailType = document.getElementById("detailType");
+const detailStyle = document.getElementById("detailStyle");
+const detailStatus = document.getElementById("detailStatus");
+const closeProject = document.querySelector(".closeProject");
+
+document.querySelectorAll(".projectCard").forEach(card=>{
+  card.addEventListener("click", ()=>{
+    const key = card.dataset.project;
+    const data = projectData[key];
+    if(!data) return;
+
+    if(detailImage) detailImage.src = data.image;
+    if(detailTitle) detailTitle.textContent = data.title;
+    if(detailDesc) detailDesc.textContent = data.desc;
+    if(detailType) detailType.textContent = data.type;
+    if(detailStyle) detailStyle.textContent = data.style;
+    if(detailStatus) detailStatus.textContent = data.status;
+
+    if(projectDetail) projectDetail.classList.add("show");
+  });
+});
+
+if(closeProject){
+  closeProject.addEventListener("click", e=>{
+    e.stopPropagation();
+    if(projectDetail) projectDetail.classList.remove("show");
+  });
+}
+
+/* ── Luxury floating lines ── */
+(function(){
+  const container = document.getElementById('luxLines');
+  if(!container) return;
+  const lines = 8;
+  for(let i = 0; i < lines; i++){
+    const el = document.createElement('div');
+    el.className = 'luxLine';
+    const w = 200 + Math.random() * 400;
+    const top = 5 + Math.random() * 90;
+    const dur = 18 + Math.random() * 22;
+    const delay = -(Math.random() * dur);
+    el.style.cssText = `width:${w}px;top:${top}%;left:0;animation-duration:${dur}s;animation-delay:${delay}s;`;
+    container.appendChild(el);
+  }
+})();
+const canvas = document.getElementById("particleCanvas");
+const ctx = canvas ? canvas.getContext("2d") : null;
+let particles = [];
+
+function resizeCanvas(){
+  if(!canvas) return;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+const particleColors = [
+  "rgba(255,255,255,.85)",
+  "rgba(255,122,0,.85)",
+  "rgba(0,220,255,.65)",
+  "rgba(255,0,180,.6)",
+  "rgba(255,255,255,.5)"
+];
+
+function spawnParticle(){
+  if(!canvas) return;
+
+  const maxScroll = document.body.scrollHeight - window.innerHeight;
+  const scrollRatio = maxScroll <= 0 ? 0 : window.scrollY / maxScroll;
+  const amount = 3 + Math.floor(scrollRatio * 10);
+
+  for(let i = 0; i < amount; i++){
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: canvas.height + Math.random() * 80,
+      r: Math.random() * 2.6 + 0.8,
+      dx: (Math.random() - .5) * 0.9,
+      dy: -(Math.random() * 1.6 + 0.45),
+      life: 1,
+      color: particleColors[Math.floor(Math.random() * particleColors.length)]
+    });
+  }
+
+  if(particles.length > 260){
+    particles.splice(0, particles.length - 260);
+  }
+}
+
+function animateParticles(){
+  if(!ctx || !canvas) return;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  particles.forEach((p, index)=>{
+    p.x += p.dx;
+    p.y += p.dy;
+    p.life -= 0.0065;
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = Math.max(p.life, 0);
+    ctx.fill();
+
+    if(p.life <= 0 || p.y < -30){
+      particles.splice(index, 1);
+    }
+  });
+
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(animateParticles);
+}
+
+setInterval(spawnParticle, 90);
+animateParticles();
+</script>
+
+</body>
+</html>
