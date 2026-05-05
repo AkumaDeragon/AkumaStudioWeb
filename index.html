@@ -355,16 +355,16 @@
 
   <div class="projectFlex">
 
-    <div class="projectCard" data-project="pet">
+    <div class="projectCard" data-project="stock">
       <div class="projectPreview">
-        <img src="pet-preview.png" alt="AI Virtual Pet Preview">
+        <img src="Stock.png" alt="製作股票分析網頁 Preview">
       </div>
 
       <div class="projectNumber">01</div>
 
       <div class="projectContent">
-        <h3>AI Virtual Pet</h3>
-        <p>AI 虛擬寵物 + Firebase + 多平台。</p>
+        <h3>製作股票分析網頁</h3>
+        <p>股票資料視覺化 + 技術分析 + 互動式網頁。</p>
         <button class="openProject" type="button">Click to open</button>
       </div>
     </div>
@@ -429,6 +429,10 @@
           <strong id="detailStatus">Building</strong>
         </div>
       </div>
+
+      <a id="detailLink" class="detailLink" href="#" target="_blank" rel="noopener noreferrer">
+        OPEN WEBSITE
+      </a>
     </div>
   </div>
 </section>
@@ -1115,13 +1119,14 @@ document.querySelectorAll("a, button, .card, .dot, .projectCard").forEach(el=>{
 
 /* ── Project detail panel ── */
 const projectData = {
-  pet: {
-    image: "pet-preview.png",
-    title: "AI Virtual Pet",
-    desc: "這是一個 AI 虛擬寵物專案，主要概念是讓使用者可以和自己的虛擬角色聊天、互動、培養關係，之後也可以加入客製化外型、心情系統和跨平台存檔。",
-    type: "Game / App",
-    style: "AI / Cute / Interactive",
-    status: "Planning"
+  stock: {
+    image: "Stock.png",
+    title: "製作股票分析網頁",
+    desc: "這是一個股票分析網頁專案，主要概念是把股票走勢、價格資訊、技術指標和重點數據整理成直覺的視覺化介面，讓使用者可以快速查看市場狀態與分析結果。",
+    type: "Finance Website",
+    style: "Dashboard / Data UI",
+    status: "Building",
+    link: "https://akumaderagon.github.io/SignalBot/"
   },
   cyberpunk: {
     image: "cyberpunk-preview.png",
@@ -1148,6 +1153,7 @@ const detailDesc = document.getElementById("detailDesc");
 const detailType = document.getElementById("detailType");
 const detailStyle = document.getElementById("detailStyle");
 const detailStatus = document.getElementById("detailStatus");
+const detailLink = document.getElementById("detailLink");
 const closeProject = document.querySelector(".closeProject");
 
 document.querySelectorAll(".projectCard").forEach(card=>{
@@ -1162,6 +1168,16 @@ document.querySelectorAll(".projectCard").forEach(card=>{
     if(detailType) detailType.textContent = data.type;
     if(detailStyle) detailStyle.textContent = data.style;
     if(detailStatus) detailStatus.textContent = data.status;
+
+    if(detailLink){
+      if(data.link){
+        detailLink.href = data.link;
+        detailLink.style.display = "inline-flex";
+      }else{
+        detailLink.href = "#";
+        detailLink.style.display = "none";
+      }
+    }
 
     if(projectDetail) projectDetail.classList.add("show");
   });

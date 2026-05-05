@@ -1289,6 +1289,32 @@ a.galleryLink:hover .cardArrow{
   color:#ff7a00;
 }
 
+.detailLink{
+  display:none;
+  align-items:center;
+  justify-content:center;
+  width:max-content;
+  margin-top:22px;
+  padding:13px 22px;
+  border:1px solid rgba(255,122,0,.55);
+  border-radius:999px;
+  background:rgba(255,122,0,.12);
+  color:#ff7a00;
+  text-decoration:none;
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:1.4px;
+  box-shadow:0 0 22px rgba(255,122,0,.12);
+  transition:.25s ease;
+}
+
+.detailLink:hover{
+  transform:translateY(-2px);
+  border-color:#fff;
+  color:#fff;
+  box-shadow:0 0 28px rgba(255,122,0,.24);
+}
+
 footer{
   text-align:center;
   padding:40px;
@@ -2822,6 +2848,32 @@ header{ position:sticky; top:0; background:rgba(0,0,0,.7); backdrop-filter:blur(
 }
 
 /* ── footer 頂線 ── */
+.detailLink{
+  display:none;
+  align-items:center;
+  justify-content:center;
+  width:max-content;
+  margin-top:22px;
+  padding:13px 22px;
+  border:1px solid rgba(255,122,0,.55);
+  border-radius:999px;
+  background:rgba(255,122,0,.12);
+  color:#ff7a00;
+  text-decoration:none;
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:1.4px;
+  box-shadow:0 0 22px rgba(255,122,0,.12);
+  transition:.25s ease;
+}
+
+.detailLink:hover{
+  transform:translateY(-2px);
+  border-color:#fff;
+  color:#fff;
+  box-shadow:0 0 28px rgba(255,122,0,.24);
+}
+
 footer{
   position:relative;
 }
@@ -2854,3 +2906,44 @@ footer::before{
   opacity:1;
 }
 
+```css
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  margin-top: 40px;
+}
+
+.galleryItem {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: .3s ease;
+}
+
+.galleryItem:hover {
+  transform: translateY(-6px);
+  border-color: #ff7a00;
+  box-shadow: 0 0 30px rgba(255,122,0,.12);
+}
+
+.galleryItem img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  display: block;
+}
+
+.galleryItem h3 {
+  padding: 18px 20px 8px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.galleryItem p {
+  padding: 0 20px 20px;
+  color: rgba(255,255,255,.7);
+  line-height: 1.7;
+}
+```
